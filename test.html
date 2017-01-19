@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Script-Type" content="text/javascript" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="theme-color" content="#cc85f3">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="stylesheet" href="materialize/css/materialize.min.css"/>
+		<link rel="stylesheet" href="css/style.css" type="text/css"/>
+
+		<script type="text/javascript" src="jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+		<script type="text/javascript" src="data.js"></script>
+		<script type="text/javascript" src="js/otofoto.js"></script>
+		<script>
+			var dir = "photos";
+		</script>
+	</head>
+	<body>
+		<div class="photos"></div>
+		<script>
+			window.onload = function() {
+				var photosContainer = document.querySelector('.photos');
+				files.forEach(function(file) {
+					var img = document.createElement('img');
+					img.src = dir + "/" + file;
+					photosContainer.appendChild(img);
+				});
+			}
+			var album = location.pathname.split("/").pop();
+			var albumName = album.substring(0, album.indexOf('.html'));
+		</script>
+	</body>
+</html>
