@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<link rel="stylesheet" href="materialize/css/materialize.min.css"/>
+		<link rel="stylesheet" href="fonts/material/material-icons.css"/>
 		<link rel="stylesheet" href="css/style.css" type="text/css"/>
 
 		<script type="text/javascript" src="jquery-3.1.1.min.js"></script>
@@ -17,6 +18,36 @@
 		</script>
 	</head>
 	<body>
-		<div class="photos"></div>
+		<div class="container">
+			<div class="card-panel">
+				<div class="row">
+					<div class="photos"></div>
+				</div>
+			</div>
+		</div>
+		<template id="photo-card">
+			<div class="image-wrapper col s12 m6 l3">
+				<div class="card hoverable">
+					<div class="card-image">
+						<img/>
+						<div class="image-select">
+							<a class="btn-floating btn-large waves-effect btn-large-icons waves-light purple lighten-3 action-add js-action--add">
+								<i class="material-icons notranslate">check_box_outline_blank</i>
+							</a>
+							<a class="btn-floating btn-large waves-effect btn-large-icons waves-light purple action-remove js-action--remove">
+								<i class="material-icons notranslate">check_box</i>
+							</a>
+						</div>
+					</div>
+					<div class="card-content truncate">
+						<label class=""></label>
+						<div class="notify-wrapper">
+							<i class="material-icons notify-check">check_circle</i>
+							<i class="material-icons notify-error">error</i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</template>
 	</body>
 </html>
