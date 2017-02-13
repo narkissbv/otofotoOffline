@@ -47,9 +47,11 @@ body {
 .image-wrapper.selected .image-select .action-remove {
     display: block;
 }
-
 .image-wrapper.selected .card-content {
 	background-color: #ce93d8;
+}
+.image-wrapper.selected .card-content label {
+    color: black;
 }
 /*
 	Helpers
