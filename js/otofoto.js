@@ -28,109 +28,54 @@ window.onload = function() {
 var album = location.pathname.split("/").pop();
 var albumName = album.substring(0, album.indexOf('.html'));
 
-// Event listeners
-$('.js-action--add').on('click', function() {
-	var imageWrapperElement = $(this).parents('.image-wrapper');
-	var photoId = imageWrapperElement.data().imgId;
-	imageWrapperElement.addClass('selected');
+localStorage[albumName] = localStorage[albumName] || '[]';
+selectedPhotos = JSON.parse(localStorage[albumName]);
 
-	// immediately update selected photos number count, and verify once server respond with success / fail
-	selectedPhotos.push(photoId);
-	updateNumberSelectedPhotos();
-	triggerIndexUpdate('add');
-	$.ajax({
-		url: "includes/set_photo_selection.php",
-		data: { 'action': 'add', 'albumid' : albumId, 'photoid': photoId },
-		method: "POST"
-	}).done(function ( response ) {
-		console.log(response.message);
-		
-		if (debugging) {
-			// add check animation to verify completeness
-			imageWrapperElement.find('.notify-check').addClass('animation');
-			setTimeout(function() {
-				imageWrapperElement.find('.notify-check').removeClass('animation');
-			}, 1000);
-		}
-	}).fail(function ( response ) {
-		console.log('photo add failed: ' + response.message);
-		if (debugging) {
-			imageWrapperElement.find('.notify-error').addClass('animation');
-			setTimeout(function() {
-				imageWrapperElement.find('.notify-error').removeClass('animation');
-			}, 2000);
-		}
-		imageWrapperElement.removeClass('selected');
-		// get the counter back to previous number if server failed to add the photo
-		selectedPhotos.splice($.inArray(photoId, selectedPhotos), 1);
-		updateNumberSelectedPhotos();
-		triggerIndexUpdate('error');
-	}).always(function() {
-		if (!!callback && !!callback.func) {
-			callback.func();
-			callback = {};
-		}
-		updateNumberSelectedPhotos();
-	});
-});
-$('.js-action--remove').on('click', function() {
-	var imageWrapperElement = $(this).parents('.image-wrapper');
-	var photoId = imageWrapperElement.data().imgId;
-	imageWrapperElement.removeClass('selected');
-	selectedPhotos.splice($.inArray(photoId, selectedPhotos), 1);
-	updateNumberSelectedPhotos();
-	triggerIndexUpdate('remove');			
-	$.ajax({
-		url: "includes/set_photo_selection.php",
-		data: { 'action': 'remove', 'albumid': albumId, "photoid": photoId },
-		method: "POST"
-	}).done(function ( response ) {
-		console.log(response.message);
-		if (debugging) {
-			imageWrapperElement.find('.notify-check').addClass('animation');
-			setTimeout(function() {
-				imageWrapperElement.find('.notify-check').removeClass('animation');
-			}, 2000);
-		}
-	}).fail(function ( response ) {
-		console.log('photo remove failed: ' + response.message);
-		imageWrapperElement.find('.notify-error').addClass('animation');
-		setTimeout(function() {
-			imageWrapperElement.find('.notify-error').removeClass('animation');
-		}, 2000);
+$(document).ready(function() {
+	// Event listeners
+	$('.js-action--add').on('click', function() {
+		var imageWrapperElement = $(this).parents('.image-wrapper');
+		var photoId = imageWrapperElement.data().imgId;
 		imageWrapperElement.addClass('selected');
-		// get the counter back to previous number if server failed to remove the photo
 		selectedPhotos.push(photoId);
-		updateNumberSelectedPhotos();
-		triggerIndexUpdate('error');				
-	}).always(function() {
-		if (!!callback && !!callback.func) {
-			callback.func();
-			callback = {};
-		}
+		localStorage[albumName] = JSON.stringify(selectedPhotos);
 	});
-});
 
+	$('.js-action--remove').on('click', function() {
+		var imageWrapperElement = $(this).parents('.image-wrapper');
+		var photoId = imageWrapperElement.data().imgId;
+		imageWrapperElement.removeClass('selected');
+		selectedPhotos.splice($.inArray(photoId, selectedPhotos), 1);
+		localStorage[albumName] = JSON.stringify(selectedPhotos);
+	});
 
-$('.selection-gallery-wrapper .js-gallery-add').on('click', function() {
-	var imgId = $(this).parents('.selection-gallery-wrapper').find('img').data('img-id');
-	var imageWrapperElement = $('.img-wrapper' + imgId);
-	callback = {
-		func: function() {
-			openSelectionGallery(97, currentImagePosition);
-		}
-	};
-	$('.selection-gallery-wrapper').addClass('selected');
-	imageWrapperElement.find('.js-action--add').click();
-});
-$('.selection-gallery-wrapper .js-gallery-remove').on('click', function() {
-	var imgId = $(this).parents('.selection-gallery-wrapper').find('img').data('img-id');
-	var imageWrapperElement = $('.img-wrapper' + imgId);
-	callback = {
-		func: function() {
-			openSelectionGallery(97, currentImagePosition);
-		}
-	};
-	$('.selection-gallery-wrapper').removeClass('selected');
-	imageWrapperElement.find('.js-action--remove').click();
+	// initialize selected images
+	var wrapperElement = '';
+	selectedPhotos.forEach(function(index) {
+		wrapperElement = $('.img-wrapper-' + index);
+		$(wrapperElement).addClass('selected');
+	});
+
+	$('.selection-gallery-wrapper .js-gallery-add').on('click', function() {
+		var imgId = $(this).parents('.selection-gallery-wrapper').find('img').data('img-id');
+		var imageWrapperElement = $('.img-wrapper' + imgId);
+		callback = {
+			func: function() {
+				openSelectionGallery(97, currentImagePosition);
+			}
+		};
+		$('.selection-gallery-wrapper').addClass('selected');
+		imageWrapperElement.find('.js-action--add').click();
+	});
+	$('.selection-gallery-wrapper .js-gallery-remove').on('click', function() {
+		var imgId = $(this).parents('.selection-gallery-wrapper').find('img').data('img-id');
+		var imageWrapperElement = $('.img-wrapper' + imgId);
+		callback = {
+			func: function() {
+				openSelectionGallery(97, currentImagePosition);
+			}
+		};
+		$('.selection-gallery-wrapper').removeClass('selected');
+		imageWrapperElement.find('.js-action--remove').click();
+	});
 });
