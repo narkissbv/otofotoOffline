@@ -4,14 +4,13 @@ window.onload = function() {
 	var imgId = 0;
 	if ('content' in document.createElement('template')) {
 		var templateElement = document.querySelector('#photo-card'),
+		cardImage = templateElement.content.querySelector('card-image'),
 		imgHolder = templateElement.content.querySelector('img'),
 		labelHolder = templateElement.content.querySelector('label'),
 		imageWrapperElement = templateElement.content.querySelector('.image-wrapper');
 		files.forEach(function(file) {
-			var img = document.createElement('img');
-			img.src = dir + "/thumbs/" + file;
-			imgHolder.src = img.src;
-			imgHolder.className = "js_" + file;
+			imgHolder.src = dir + "/thumbs/" + file;
+			imgHolder.className = "js-photo-" + imgId;
 			imgHolder.alt = file;
 			labelHolder.innerHTML = file;
 			imageWrapperElement.dataset.imgId = imgId;
@@ -56,6 +55,13 @@ $(document).ready(function() {
 		$(wrapperElement).addClass('selected');
 	});
 
+	// Gallery event listeners
+	for (var i = 0 ; i < files.length ; i++) {
+		$('.js-photo-' + i).on('click', ((function(i) {
+			openSelectionGallery(i);
+		}).bind(null,i)));
+	}
+
 	$('.selection-gallery-wrapper .js-gallery-add').on('click', function() {
 		var imgId = $(this).parents('.selection-gallery-wrapper').find('img').data('img-id');
 		var imageWrapperElement = $('.img-wrapper' + imgId);
@@ -79,3 +85,7 @@ $(document).ready(function() {
 		imageWrapperElement.find('.js-action--remove').click();
 	});
 });
+
+function openSelectionGallery(imgId) {
+	console.log('Opening gallery in index: ' + imgId);
+}
