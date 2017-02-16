@@ -70,19 +70,13 @@ $(document).ready(function() {
 		openSelectionGallery(--imgId, files);
 	});
 	$('.selection-gallery-wrapper .js-gallery-add').on('click', function() {
-		var imgId = $(this).parents('.selection-gallery-wrapper').find('img').data('img-id');
-		var imageWrapperElement = $('.img-wrapper' + imgId);
-		callback = {
-			func: function() {
-				openSelectionGallery(imgId, files);
-			}
-		};
+		var imageWrapperElement = $('.img-wrapper-' + imgId);
 		$('.selection-gallery-wrapper').addClass('selected');
 		imageWrapperElement.find('.js-action--add').click();
 	});
 	$('.selection-gallery-wrapper .js-gallery-remove').on('click', function() {
 		var imgId = $(this).parents('.selection-gallery-wrapper').find('img').data('img-id');
-		var imageWrapperElement = $('.img-wrapper' + imgId);
+		var imageWrapperElement = $('.img-wrapper-' + imgId);
 		callback = {
 			func: function() {
 				openSelectionGallery(imgId, files);
@@ -91,8 +85,6 @@ $(document).ready(function() {
 		$('.selection-gallery-wrapper').removeClass('selected');
 		imageWrapperElement.find('.js-action--remove').click();
 	});
-
-
 	$('.selection-gallery-wrapper .js-gallery-close').on('click', function() {
 		closeSelectionGallery();
 	})
@@ -101,13 +93,21 @@ $(document).ready(function() {
 function openSelectionGallery(imagePosition, photosList) {
 	$('#screen-block').show();
 	$('.selection-gallery-wrapper').show();
+	$('.selection-gallery-wrapper').removeClass('selected');
+	// check whether the current image is selected or not
+	if (selectedPhotos.indexOf(imagePosition) > 0) {
+		$('.selection-gallery-wrapper').addClass('selected');
+	}
+
+	// set carousel logic
 	if (imagePosition < 0) {
 		imagePosition = photosList.length -1;
 	}
 	else if (imagePosition > photosList.length - 1) {
 		imagePosition = 0;
 	}
-	// set the gallery image
+
+	// set the gallery image properties
 	$('.selection-gallery-wrapper img.selection-image').attr({
 		src: 'photos/' + photosList[imagePosition],
 		title: photosList[imagePosition],
