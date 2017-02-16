@@ -1,7 +1,6 @@
 window.onload = function() {
 	var photosContainer = document.querySelector('.photos');
 	// use image card template
-	var imgId = 0;
 	if ('content' in document.createElement('template')) {
 		var templateElement = document.querySelector('#photo-card'),
 		cardImage = templateElement.content.querySelector('card-image'),
@@ -19,6 +18,7 @@ window.onload = function() {
 			photosContainer.appendChild(clone);
 			imgId++;
 		});
+		imgId = 0;
 	}
 	else {
 		alert('Using Internet Explorer much?');
@@ -26,7 +26,7 @@ window.onload = function() {
 }
 var album = location.pathname.split("/").pop();
 var albumName = album.substring(0, album.indexOf('.html'));
-
+var imgId = 0;
 localStorage[albumName] = localStorage[albumName] || '[]';
 selectedPhotos = JSON.parse(localStorage[albumName]);
 
@@ -62,12 +62,19 @@ $(document).ready(function() {
 		}).bind(null,i)));
 	}
 
+	// add event listener to gallery modal action buttons
+	$('.selection-gallery-wrapper .js-gallery-next').on('click', function() {
+		openSelectionGallery(++imgId, files);
+	});
+	$('.selection-gallery-wrapper .js-gallery-prev').on('click', function() {
+		openSelectionGallery(--imgId, files);
+	});
 	$('.selection-gallery-wrapper .js-gallery-add').on('click', function() {
 		var imgId = $(this).parents('.selection-gallery-wrapper').find('img').data('img-id');
 		var imageWrapperElement = $('.img-wrapper' + imgId);
 		callback = {
 			func: function() {
-				openSelectionGallery(97, currentImagePosition);
+				openSelectionGallery(imgId, files);
 			}
 		};
 		$('.selection-gallery-wrapper').addClass('selected');
@@ -78,12 +85,14 @@ $(document).ready(function() {
 		var imageWrapperElement = $('.img-wrapper' + imgId);
 		callback = {
 			func: function() {
-				openSelectionGallery(97, currentImagePosition);
+				openSelectionGallery(imgId, files);
 			}
 		};
 		$('.selection-gallery-wrapper').removeClass('selected');
 		imageWrapperElement.find('.js-action--remove').click();
 	});
+
+
 	$('.selection-gallery-wrapper .js-gallery-close').on('click', function() {
 		closeSelectionGallery();
 	})
@@ -109,10 +118,39 @@ function openSelectionGallery(imagePosition, photosList) {
 		'max-height': $(window).height(),
 		'max-width': $(window).width()
 	});
+	imgId = imagePosition
 	console.log(imagePosition);
 }
 
 function closeSelectionGallery() {
 	$('#screen-block').hide();
 	$('.selection-gallery-wrapper').hide();
+}
+
+document.onkeydown = function(e) {
+	e = e || window.event;
+	if (e.keyCode == 37) {
+		//prev
+		$('.selection-gallery-wrapper .prev-arrow').click();
+	}
+	else if (e.keyCode == 39) {
+		// next
+		$('.selection-gallery-wrapper .next-arrow').click();
+	}
+	else if (e.keyCode == 27) {
+		// esc
+		toggleBodyBG(e);
+	}
+	else if (e.keyCode == 32) {
+		// space (select photo)
+		if (currentPage == "select_photos2") {
+			if ($('.selection-gallery-wrapper').hasClass('selected')) {
+				$('.js-gallery-remove').click();
+			}
+			else {
+				$('.js-gallery-add').click();
+			}
+		}
+		return false;
+	}
 }
