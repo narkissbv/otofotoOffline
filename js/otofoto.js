@@ -125,6 +125,9 @@ function openSelectionGallery(imagePosition, photosList) {
 function closeSelectionGallery() {
 	$('#screen-block').hide();
 	$('.selection-gallery-wrapper').hide();
+	$('.selection-gallery-wrapper img.selection-image').attr({
+		src: ''
+	});
 }
 
 document.onkeydown = function(e) {
@@ -139,7 +142,7 @@ document.onkeydown = function(e) {
 	}
 	else if (e.keyCode == 27) {
 		// esc
-		toggleBodyBG(e);
+		closeSelectionGallery();
 	}
 	else if (e.keyCode == 32) {
 		// space (select photo)
