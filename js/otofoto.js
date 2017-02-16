@@ -118,8 +118,7 @@ function openSelectionGallery(imagePosition, photosList) {
 		'max-height': $(window).height(),
 		'max-width': $(window).width()
 	});
-	imgId = imagePosition
-	console.log(imagePosition);
+	imgId = imagePosition;
 }
 
 function closeSelectionGallery() {
@@ -156,4 +155,27 @@ document.onkeydown = function(e) {
 		}
 		return false;
 	}
+}
+
+function download () {
+	// prepare text
+	var resultText = '';
+	selectedPhotos.forEach(function(i) {
+		resultText += files[i] + "\n";
+	});
+
+    // Set up the link
+    var link = document.createElement("a");
+    link.setAttribute("target","_blank");
+    if(Blob !== undefined) {
+        var blob = new Blob([resultText], {type: "text/plain"});
+        link.setAttribute("href", URL.createObjectURL(blob));
+    } else {
+        link.setAttribute("href","data:text/plain," + encodeURIComponent(resultText));
+    }
+    link.setAttribute("download", albumName + ".txt");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
 }
