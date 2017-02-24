@@ -77,11 +77,6 @@ $(document).ready(function() {
 	$('.selection-gallery-wrapper .js-gallery-remove').on('click', function() {
 		var imgId = $(this).parents('.selection-gallery-wrapper').find('img').data('img-id');
 		var imageWrapperElement = $('.img-wrapper-' + imgId);
-		callback = {
-			func: function() {
-				openSelectionGallery(imgId, files);
-			}
-		};
 		$('.selection-gallery-wrapper').removeClass('selected');
 		imageWrapperElement.find('.js-action--remove').click();
 	});
@@ -145,13 +140,11 @@ document.onkeydown = function(e) {
 	}
 	else if (e.keyCode == 32) {
 		// space (select photo)
-		if (currentPage == "select_photos2") {
-			if ($('.selection-gallery-wrapper').hasClass('selected')) {
-				$('.js-gallery-remove').click();
-			}
-			else {
-				$('.js-gallery-add').click();
-			}
+		if ($('.selection-gallery-wrapper').hasClass('selected')) {
+			$('.js-gallery-remove').click();
+		}
+		else {
+			$('.js-gallery-add').click();
 		}
 		return false;
 	}
