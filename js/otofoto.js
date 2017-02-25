@@ -1,4 +1,10 @@
-window.onload = function() {
+var album = location.pathname.split("/").pop();
+var albumName = album.substring(0, album.indexOf('.html'));
+var imgId = 0;
+localStorage[albumName] = localStorage[albumName] || '[]';
+selectedPhotos = JSON.parse(localStorage[albumName]);
+
+$(document).ready(function() {
 	var photosContainer = document.querySelector('.photos');
 	// use image card template
 	if ('content' in document.createElement('template')) {
@@ -23,14 +29,7 @@ window.onload = function() {
 	else {
 		alert('Using Internet Explorer much?');
 	}
-}
-var album = location.pathname.split("/").pop();
-var albumName = album.substring(0, album.indexOf('.html'));
-var imgId = 0;
-localStorage[albumName] = localStorage[albumName] || '[]';
-selectedPhotos = JSON.parse(localStorage[albumName]);
 
-$(document).ready(function() {
 	// Event listeners
 	$('.js-action--add').on('click', function() {
 		var imageWrapperElement = $(this).parents('.image-wrapper');
@@ -38,6 +37,8 @@ $(document).ready(function() {
 		imageWrapperElement.addClass('selected');
 		selectedPhotos.push(photoId);
 		localStorage[albumName] = JSON.stringify(selectedPhotos);
+		updateNumberSelectedPhotos();
+		triggerIndexUpdate('add');
 	});
 
 	$('.js-action--remove').on('click', function() {
@@ -46,6 +47,8 @@ $(document).ready(function() {
 		imageWrapperElement.removeClass('selected');
 		selectedPhotos.splice($.inArray(photoId, selectedPhotos), 1);
 		localStorage[albumName] = JSON.stringify(selectedPhotos);
+		updateNumberSelectedPhotos();
+		triggerIndexUpdate('remove');
 	});
 
 	// initialize selected images
@@ -82,7 +85,7 @@ $(document).ready(function() {
 	});
 	$('.selection-gallery-wrapper .js-gallery-close').on('click', function() {
 		closeSelectionGallery();
-	})
+	});
 });
 
 function openSelectionGallery(imagePosition, photosList) {
@@ -170,4 +173,30 @@ function download () {
 	document.body.appendChild(link);
 	link.click();
 	document.body.removeChild(link);
+}
+
+// Selection index
+function updateNumberSelectedPhotos() {
+	$('.js-num-selected-photos').html(selectedPhotos.length);
+	$('.js-total-album-size').html(albumSize);
+}
+function triggerIndexUpdate(action) {	
+	if (action == "add") {
+		$('.selection-index').addClass('add');
+	}
+	else if (action == "remove") {
+		$('.selection-index').addClass('remove');
+	}
+	else if (action == "error") {
+		$('.selection-index').addClass('error');
+	}
+	setTimeout(function() {
+		$('.selection-index').removeClass('add remove error');
+	}, 500);
+	$('.selection-index .determinate').css({
+		'width': Math.floor(selectedPhotos.length / albumSize * 100) + "%"
+	});
+	$('.selection-index .progress').attr({
+		'title': 'selected ' + Math.floor(selectedPhotos.length / albumSize * 100) + "%"
+	});
 }

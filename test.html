@@ -15,6 +15,7 @@
 		<script type="text/javascript" src="js/otofoto.js"></script>
 		<script>
 			var dir = "photos";
+			var albumSize = 100;
 		</script>
 	</head>
 	<body>
@@ -72,6 +73,15 @@
 				</div>
 			</div>
 		</template>
+		<div class="card-panel selection-index">
+			<div>
+				Selected <span class="js-num-selected-photos"></span>
+				out of <span class="js-total-album-size"></span>
+			</div>
+			<div class="progress purple lighten-3" title="">
+				<div class="determinate purple"></div>
+			</div>
+		</div>
 		<a id="export" class="myButton" download="" href="#"></a>
 	</body>
 </html>
