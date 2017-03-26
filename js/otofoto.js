@@ -1,10 +1,13 @@
 var album = location.pathname.split("/").pop();
 var albumName = album.substring(0, album.indexOf('.html'));
 var imgId = 0;
+var perpage = 100;
 localStorage[albumName] = localStorage[albumName] || '[]';
 selectedPhotos = JSON.parse(localStorage[albumName]);
 
 $(document).ready(function() {
+	triggerIndexUpdate()
+	localStorage['pagination'] = localStorage['pagination'] || 0;
 	var photosContainer = document.querySelector('.photos');
 	// use image card template
 	if ('content' in document.createElement('template')) {
@@ -37,7 +40,7 @@ $(document).ready(function() {
 		imageWrapperElement.addClass('selected');
 		selectedPhotos.push(photoId);
 		localStorage[albumName] = JSON.stringify(selectedPhotos);
-		updateNumberSelectedPhotos();
+		//updateNumberSelectedPhotos();
 		triggerIndexUpdate('add');
 	});
 
@@ -47,7 +50,7 @@ $(document).ready(function() {
 		imageWrapperElement.removeClass('selected');
 		selectedPhotos.splice($.inArray(photoId, selectedPhotos), 1);
 		localStorage[albumName] = JSON.stringify(selectedPhotos);
-		updateNumberSelectedPhotos();
+		//updateNumberSelectedPhotos();
 		triggerIndexUpdate('remove');
 	});
 
@@ -176,11 +179,9 @@ function download () {
 }
 
 // Selection index
-function updateNumberSelectedPhotos() {
+function triggerIndexUpdate(action) {
 	$('.js-num-selected-photos').html(selectedPhotos.length);
 	$('.js-total-album-size').html(albumSize);
-}
-function triggerIndexUpdate(action) {	
 	if (action == "add") {
 		$('.selection-index').addClass('add');
 	}
@@ -200,3 +201,5 @@ function triggerIndexUpdate(action) {
 		'title': 'selected ' + Math.floor(selectedPhotos.length / albumSize * 100) + "%"
 	});
 }
+
+// Pagination
