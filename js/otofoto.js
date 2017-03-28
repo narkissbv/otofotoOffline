@@ -1,7 +1,8 @@
 var album = location.pathname.split("/").pop();
-var albumName = album.substring(0, album.indexOf('.html'));
-var imgId = 0;
-var perpage = 100;
+var albumName = album.substring(0, album.indexOf('.html')),
+	imgId = 0,
+	perpage = 8,
+	currentPage = localStorage['currentPage'] || 1;
 localStorage[albumName] = localStorage[albumName] || '[]';
 selectedPhotos = JSON.parse(localStorage[albumName]);
 
@@ -9,10 +10,10 @@ $(document).ready(function() {
 	triggerIndexUpdate()
 	localStorage['pagination'] = localStorage['pagination'] || 0;
 	var photosContainer = document.querySelector('.photos');
-	// use image card template
 	if ('content' in document.createElement('template')) {
+		// Build image cards
 		var templateElement = document.querySelector('#photo-card'),
-		cardImage = templateElement.content.querySelector('card-image'),
+		cardImage = templateElement.content.querySelector('.card-image'),
 		imgHolder = templateElement.content.querySelector('img'),
 		labelHolder = templateElement.content.querySelector('label'),
 		imageWrapperElement = templateElement.content.querySelector('.image-wrapper');
@@ -28,6 +29,27 @@ $(document).ready(function() {
 			imgId++;
 		});
 		imgId = 0;
+
+		// Build pagination
+		templateElement = document.querySelector('#pagination-item');
+		var listItem = templateElement.content.querySelector('li'),
+		paginationContainer = document.querySelector('ul.pagination'),
+		anchorElement = templateElement.content.querySelector('a');
+		var totalNumberOfPhotos = files.length,
+		totalPages = totalNumberOfPhotos / perpage;
+		for (var i = 0 ; i < totalPages ; i++) {
+			anchorElement.innerHTML = i + 1;
+			anchorElement.dataset.pageId = i + 1;
+			var clone = document.importNode(templateElement.content, true);
+			paginationContainer.appendChild(clone);
+		}
+
+		// Register pagination event listeners
+		document.querySelectorAll('.pagination a').forEach(function(anchorElement) {
+			$(anchorElement).on('click', function() {
+				localStorage['currentPage'] = anchorElement.dataset.pageId;
+			});
+		});
 	}
 	else {
 		alert('Using Internet Explorer much?');
