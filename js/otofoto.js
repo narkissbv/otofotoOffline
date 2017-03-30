@@ -1,6 +1,6 @@
 var album = location.pathname.split("/").pop();
 var albumName = album.substring(0, album.indexOf('.html')),
-	perPage = 8,
+	perPage = 16,
 	currentPage = localStorage['currentPage'] || 1;
 	currentPage = JSON.parse(currentPage);
 localStorage[albumName] = localStorage[albumName] || '[]';
@@ -88,18 +88,18 @@ function renderPage() {
 	});
 
 	// Gallery event listeners
-	for (var i = 0 ; i < files.length ; i++) {
+	for (var i = 0 ; i < pageFiles.length ; i++) {
 		$('.js-photo-' + i).on('click', ((function(i) {
-			openSelectionGallery(i, files);
+			openSelectionGallery(i, pageFiles);
 		}).bind(null,i)));
 	}
 
 	// add event listener to gallery modal action buttons
 	$('.selection-gallery-wrapper .js-gallery-next').on('click', function() {
-		openSelectionGallery(++imgId, files);
+		openSelectionGallery(++imgId, pageFiles);
 	});
 	$('.selection-gallery-wrapper .js-gallery-prev').on('click', function() {
-		openSelectionGallery(--imgId, files);
+		openSelectionGallery(--imgId, pageFiles);
 	});
 	$('.selection-gallery-wrapper .js-gallery-add').on('click', function() {
 		var imageWrapperElement = $('.img-wrapper-' + imgId);
