@@ -1,41 +1,46 @@
 var album = location.pathname.split("/").pop();
 var albumName = album.substring(0, album.indexOf('.html')),
-	imgId = 0,
 	perPage = 8,
 	currentPage = localStorage['currentPage'] || 1;
+	currentPage = JSON.parse(currentPage);
 localStorage[albumName] = localStorage[albumName] || '[]';
 selectedPhotos = JSON.parse(localStorage[albumName]);
 
 $(document).ready(function() {
-	triggerIndexUpdate()
-	localStorage['pagination'] = localStorage['pagination'] || 0;
+	renderPage();
+});
+
+function renderPage() {
+	triggerIndexUpdate();
 	var photosContainer = document.querySelector('.photos');
+	$(photosContainer).html('');
 	if ('content' in document.createElement('template')) {
 		// Build image cards
 		var templateElement = document.querySelector('#photo-card'),
 		cardImage = templateElement.content.querySelector('.card-image'),
 		imgHolder = templateElement.content.querySelector('img'),
 		labelHolder = templateElement.content.querySelector('label'),
-		imageWrapperElement = templateElement.content.querySelector('.image-wrapper');
-		files1 = files.slice((currentPage - 1) * perPage, (currentPage) * perPage)
-		files1.forEach(function(file) {
+		imageWrapperElement = templateElement.content.querySelector('.image-wrapper'),
+		offset = (currentPage - 1) * perPage,
+		imgId = 0;
+		pageFiles = files.slice((currentPage - 1) * perPage, (currentPage) * perPage);
+		pageFiles.forEach(function(file) {
 			imgHolder.src = dir + "/thumbs/" + file;
-			imgHolder.className = "js-photo-" + imgId;
+			imgHolder.className = "js-photo-" + (offset + imgId++);
 			imgHolder.alt = file;
 			labelHolder.innerHTML = file;
-			imageWrapperElement.dataset.imgId = imgId;
-			imageWrapperElement.className = "image-wrapper col s12 m6 l3 " + "img-wrapper-" + imgId;
+			imageWrapperElement.dataset.imgId = offset + imgId;
+			imageWrapperElement.className = "image-wrapper col s12 m6 l3 " + "img-wrapper-" + (offset + imgId);
 			var clone = document.importNode(templateElement.content, true);
 			photosContainer.appendChild(clone);
-			imgId++;
 		});
-		imgId = 0;
 
 		// Build pagination
 		templateElement = document.querySelector('#pagination-item');
 		var listItem = templateElement.content.querySelector('li'),
 		paginationContainer = document.querySelector('ul.pagination'),
 		anchorElement = templateElement.content.querySelector('a');
+		$(paginationContainer).html('');
 		var totalNumberOfPhotos = files.length,
 		totalPages = totalNumberOfPhotos / perPage;
 		for (var i = 0 ; i < totalPages ; i++) {
@@ -49,12 +54,10 @@ $(document).ready(function() {
 		document.querySelectorAll('.pagination a').forEach(function(anchorElement) {
 			$(anchorElement).on('click', function() {
 				localStorage['currentPage'] = anchorElement.dataset.pageId;
+				currentPage = JSON.parse(anchorElement.dataset.pageId);
+				renderPage();
 			});
 		});
-	}
-	else {
-		alert('Using Internet Explorer much?');
-	}
 
 	// Event listeners
 	$('.js-action--add').on('click', function() {
@@ -112,7 +115,11 @@ $(document).ready(function() {
 	$('.selection-gallery-wrapper .js-gallery-close').on('click', function() {
 		closeSelectionGallery();
 	});
-});
+	}
+	else {
+		alert('Using Internet Explorer much?');
+	}
+}
 
 function openSelectionGallery(imagePosition, photosList) {
 	$('#screen-block').show();
