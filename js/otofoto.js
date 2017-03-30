@@ -1,7 +1,7 @@
 var album = location.pathname.split("/").pop();
 var albumName = album.substring(0, album.indexOf('.html')),
 	imgId = 0,
-	perpage = 8,
+	perPage = 8,
 	currentPage = localStorage['currentPage'] || 1;
 localStorage[albumName] = localStorage[albumName] || '[]';
 selectedPhotos = JSON.parse(localStorage[albumName]);
@@ -17,7 +17,8 @@ $(document).ready(function() {
 		imgHolder = templateElement.content.querySelector('img'),
 		labelHolder = templateElement.content.querySelector('label'),
 		imageWrapperElement = templateElement.content.querySelector('.image-wrapper');
-		files.forEach(function(file) {
+		files1 = files.slice((currentPage - 1) * perPage, (currentPage) * perPage)
+		files1.forEach(function(file) {
 			imgHolder.src = dir + "/thumbs/" + file;
 			imgHolder.className = "js-photo-" + imgId;
 			imgHolder.alt = file;
@@ -36,7 +37,7 @@ $(document).ready(function() {
 		paginationContainer = document.querySelector('ul.pagination'),
 		anchorElement = templateElement.content.querySelector('a');
 		var totalNumberOfPhotos = files.length,
-		totalPages = totalNumberOfPhotos / perpage;
+		totalPages = totalNumberOfPhotos / perPage;
 		for (var i = 0 ; i < totalPages ; i++) {
 			anchorElement.innerHTML = i + 1;
 			anchorElement.dataset.pageId = i + 1;
@@ -223,5 +224,3 @@ function triggerIndexUpdate(action) {
 		'title': 'selected ' + Math.floor(selectedPhotos.length / albumSize * 100) + "%"
 	});
 }
-
-// Pagination
