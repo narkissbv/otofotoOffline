@@ -12,8 +12,8 @@ $(document).ready(function() {
 
 function renderPage() {
 	triggerIndexUpdate();
-	var photosContainer = document.querySelector('.photos');
-	$(photosContainer).html('');
+	var photosContainer = $('.photos');
+	photosContainer.html('');
 	if ('content' in document.createElement('template')) {
 		// Build image cards
 		var templateElement = document.querySelector('#photo-card'),
@@ -32,24 +32,27 @@ function renderPage() {
 			imageWrapperElement.dataset.imgId = offset + i;
 			imageWrapperElement.className = "image-wrapper col s12 m6 l3 " + "img-wrapper-" + (offset + i);
 			var clone = document.importNode(templateElement.content, true);
-			photosContainer.appendChild(clone);
+			photosContainer.append(clone);
 			i++;
 		});
 
 		// Build pagination
 		templateElement = document.querySelector('#pagination-item');
 		var listItem = templateElement.content.querySelector('li'),
-		paginationContainer = document.querySelector('ul.pagination'),
+		paginationContainer = $('ul.pagination'),
 		anchorElement = templateElement.content.querySelector('a');
-		$(paginationContainer).html('');
+		paginationContainer.html('');
 		var totalNumberOfPhotos = files.length,
 		totalPages = totalNumberOfPhotos / perPage;
 		for (var i = 0 ; i < totalPages ; i++) {
 			anchorElement.innerHTML = i + 1;
 			anchorElement.dataset.pageId = i + 1;
 			var clone = document.importNode(templateElement.content, true);
-			paginationContainer.appendChild(clone);
+			paginationContainer.append(clone);
 		}
+		// set active pagination page
+		$('ul.pagination a[data-page-id="' + currentPage + '"]').parent().addClass('active');
+
 		// Register pagination event listeners
 		document.querySelectorAll('.pagination a').forEach(function(anchorElement) {
 			$(anchorElement).on('click', function() {
@@ -126,7 +129,6 @@ function renderPage() {
 }
 
 function openSelectionGallery(imagePosition, photosList) {
-	console.log('imagePosition: ' + imagePosition);
 	$('#screen-block').show();
 	$('.selection-gallery-wrapper').show();
 	$('.selection-gallery-wrapper').removeClass('selected');
