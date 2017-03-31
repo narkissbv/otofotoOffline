@@ -22,17 +22,18 @@ function renderPage() {
 		labelHolder = templateElement.content.querySelector('label'),
 		imageWrapperElement = templateElement.content.querySelector('.image-wrapper'),
 		offset = (currentPage - 1) * perPage,
-		imgId = 0;
+		i = 0;
 		pageFiles = files.slice((currentPage - 1) * perPage, (currentPage) * perPage);
 		pageFiles.forEach(function(file) {
 			imgHolder.src = dir + "/thumbs/" + file;
-			imgHolder.className = "js-photo-" + (offset + imgId++);
+			imgHolder.className = "js-photo-" + (offset + i);
 			imgHolder.alt = file;
 			labelHolder.innerHTML = file;
-			imageWrapperElement.dataset.imgId = offset + imgId;
-			imageWrapperElement.className = "image-wrapper col s12 m6 l3 " + "img-wrapper-" + (offset + imgId);
+			imageWrapperElement.dataset.imgId = offset + i;
+			imageWrapperElement.className = "image-wrapper col s12 m6 l3 " + "img-wrapper-" + (offset + i);
 			var clone = document.importNode(templateElement.content, true);
 			photosContainer.appendChild(clone);
+			i++;
 		});
 
 		// Build pagination
@@ -49,7 +50,6 @@ function renderPage() {
 			var clone = document.importNode(templateElement.content, true);
 			paginationContainer.appendChild(clone);
 		}
-
 		// Register pagination event listeners
 		document.querySelectorAll('.pagination a').forEach(function(anchorElement) {
 			$(anchorElement).on('click', function() {
@@ -89,25 +89,29 @@ function renderPage() {
 
 	// Gallery event listeners
 	for (var i = 0 ; i < pageFiles.length ; i++) {
-		$('.js-photo-' + i).on('click', ((function(i) {
+		var index = ((currentPage - 1) * perPage) + i;
+		$('.js-photo-' + index).on('click', ((function(i) {
 			openSelectionGallery(i, pageFiles);
 		}).bind(null,i)));
 	}
 
 	// add event listener to gallery modal action buttons
 	$('.selection-gallery-wrapper .js-gallery-next').on('click', function() {
+		var imgId = $('img.selection-image').data('img-id');
 		openSelectionGallery(++imgId, pageFiles);
 	});
 	$('.selection-gallery-wrapper .js-gallery-prev').on('click', function() {
+		var imgId = $('img.selection-image').data('img-id');
 		openSelectionGallery(--imgId, pageFiles);
 	});
 	$('.selection-gallery-wrapper .js-gallery-add').on('click', function() {
+		var imgId = $('img.selection-image').data('img-id');
 		var imageWrapperElement = $('.img-wrapper-' + imgId);
 		$('.selection-gallery-wrapper').addClass('selected');
 		imageWrapperElement.find('.js-action--add').click();
 	});
 	$('.selection-gallery-wrapper .js-gallery-remove').on('click', function() {
-		var imgId = $(this).parents('.selection-gallery-wrapper').find('img').data('img-id');
+		var imgId = $('img.selection-image').data('img-id');
 		var imageWrapperElement = $('.img-wrapper-' + imgId);
 		$('.selection-gallery-wrapper').removeClass('selected');
 		imageWrapperElement.find('.js-action--remove').click();
@@ -122,6 +126,7 @@ function renderPage() {
 }
 
 function openSelectionGallery(imagePosition, photosList) {
+	console.log('imagePosition: ' + imagePosition);
 	$('#screen-block').show();
 	$('.selection-gallery-wrapper').show();
 	$('.selection-gallery-wrapper').removeClass('selected');
@@ -144,12 +149,11 @@ function openSelectionGallery(imagePosition, photosList) {
 		title: photosList[imagePosition],
 		alt: photosList[imagePosition]
 	}).data({
-		"img-id": imagePosition
+		"img-id": (currentPage - 1) * perPage + imagePosition
 	}).css({
 		'max-height': $(window).height(),
 		'max-width': $(window).width()
 	});
-	imgId = imagePosition;
 }
 
 function closeSelectionGallery() {
