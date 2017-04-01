@@ -1,5 +1,12 @@
 body {
 	background-color: rgb(234, 234, 234);
+	padding-top: 20px;
+	padding-bottom: 86px;
+}
+@media screen and (min-width: 993px) {
+	body {
+		padding-bottom: 0;
+	}
 }
 
 .photos::after {
@@ -189,6 +196,23 @@ body {
 	100% { background-color: white; }	
 }
 
+.selection-download {
+	position: fixed;
+	bottom: 65px;
+	z-index: 3;
+	right: 5%;
+}
+.selection-download a {
+
+}
+@media screen and (min-width: 993px) {
+	.selection-download {
+		bottom: 15px;
+	}
+	.selection-download a {
+
+	}
+}
 /*
 	Helpers
 */
