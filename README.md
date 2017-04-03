@@ -12,7 +12,11 @@ For each album, edit the `.html` file and set the desired number of photos for t
   var albumSize = 100;
 </script>
 ```
-Copy all the relevant photos (resized to fit viewing on a computer) to the `photos` folder. Once done, make sure the app loads all of the photos properly but simply running the `.html` file (it doesn't matter which you load if you have more than one).
+Copy all the relevant photos (resized to fit viewing on a computer) to the `photos` folder.
+
+Run locally `list.sh` to create `data.js`. On Windows, simply double-click the script. On Linux/Mac give execution rights to the file by typing in the terminal, inside the `/photos` folder: `chmod a+x list.sh`. Now the file is ready to be executed. You can either run it from the Terminal by typing `. list.sh` or from the file explorer. Once done, a `data.js` file should be created in the `/photos` folder. Move it to the root folder where the `.html` files are.
+
+Once done, make sure the app loads all of the photos properly but simply running the `.html` file (it doesn't matter which you load if you have more than one).
 
 # Selecting photos
 To add a photo to the album, click on the empty checkbox that is on the bottom of the relevant photo. Clicking the checkbox again will remove the photo from the album. The index on the bottom will indicate your selection progress. You may select more or less than set by the photographer. The indication is only for notifying on your progress, and will not block you from selecting.
