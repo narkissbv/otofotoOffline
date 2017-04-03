@@ -1,6 +1,8 @@
 # otofotoOffline
 An offline version of otoFoto that uses nothing but a modern web-browser, to select photos for albums.
 
+### Current version: v0.1
+
 # Getting started
 For each album, copy and rename the `.html` file to the name of the album. Avoid using spaces for now. For example `wedding.html`, `brideparents.html`, `groomparents.html` and so on...
 For each album, edit the `.html` file and set the desired number of photos for that album after `var albumSize`. **DO NOT CHANGE ANYTHING OTHER THAN THE NUMBER!**
