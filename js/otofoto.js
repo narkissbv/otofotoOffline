@@ -1,6 +1,7 @@
 var album = location.pathname.split("/").pop();
 var albumName = album.substring(0, album.indexOf('.html')),
-	perPage = 16,
+	perPage = 60,
+	dir = "photos",
 	currentPage = localStorage['currentPage'] || 1;
 	currentPage = JSON.parse(currentPage);
 localStorage[albumName] = localStorage[albumName] || '[]';
@@ -25,7 +26,7 @@ function renderPage() {
 		i = 0;
 		pageFiles = files.slice((currentPage - 1) * perPage, (currentPage) * perPage);
 		pageFiles.forEach(function(file) {
-			imgHolder.src = dir + "/thumbs/" + file;
+			imgHolder.src = dir + "/" + file;
 			imgHolder.className = "js-photo-" + (offset + i);
 			imgHolder.alt = file;
 			labelHolder.innerHTML = file;
