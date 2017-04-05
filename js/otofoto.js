@@ -106,10 +106,12 @@ function renderPage() {
 		// add event listener to gallery modal action buttons
 		$('.selection-gallery-wrapper .js-gallery-next').on('click', function() {
 			var imgId = $('img.selection-image').data('img-id');
+			imgId -= (currentPage - 1) * perPage;
 			openSelectionGallery(++imgId, pageFiles);
 		});
 		$('.selection-gallery-wrapper .js-gallery-prev').on('click', function() {
 			var imgId = $('img.selection-image').data('img-id');
+			imgId -= (currentPage - 1) * perPage;
 			openSelectionGallery(--imgId, pageFiles);
 		});
 		$('.selection-gallery-wrapper .js-gallery-add').on('click', function() {
