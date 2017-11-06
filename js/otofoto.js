@@ -140,7 +140,7 @@ function openSelectionGallery(imagePosition, photosList) {
 	$('.selection-gallery-wrapper').show();
 	$('.selection-gallery-wrapper').removeClass('selected');
 	// check whether the current image is selected or not
-	if (selectedPhotos.indexOf(imagePosition) > 0) {
+	if (selectedPhotos.indexOf(imagePosition) > -1) {
 		$('.selection-gallery-wrapper').addClass('selected');
 	}
 
