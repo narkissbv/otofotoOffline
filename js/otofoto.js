@@ -1,6 +1,6 @@
 var album = location.pathname.split("/").pop();
 var albumName = album.substring(0, album.indexOf('.html')),
-	perPage = 10,
+	perPage = 60,
 	dir = "photos",
 	currentPage = localStorage['currentPage'] || 1;
 	currentPage = JSON.parse(currentPage);
