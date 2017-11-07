@@ -1,5 +1,4 @@
 body {
-	background-color: rgb(234, 234, 234);
 	padding-top: 20px;
 	padding-bottom: 86px;
 }
@@ -8,7 +7,25 @@ body {
 		padding-bottom: 0;
 	}
 }
-
+body.light {
+	background-color: rgb(234, 234, 234);
+}
+body.dark {
+	background-color: #222;
+}
+body.dark .card .card-content {
+	background-color: #444;
+}
+body.dark .card .card-content label {
+	color: white;
+}
+body.dark .pagination li a {
+	color: white;
+}
+body.dark .selection-index {
+	background-color: #444;
+	color: white;
+}
 .photos::after {
 	clear: both;
 }

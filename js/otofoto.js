@@ -1,6 +1,6 @@
 var album = location.pathname.split("/").pop();
 var albumName = album.substring(0, album.indexOf('.html')),
-	perPage = 60,
+	perPage = 10,
 	dir = "photos",
 	currentPage = localStorage['currentPage'] || 1;
 	currentPage = JSON.parse(currentPage);
@@ -86,8 +86,16 @@ function renderPage() {
 
 		$('.selection-download a').on('click', function() {
 			download();
-		})
+		});
 
+		$('.js-theme-switch').on('change', function() {
+			$('body').removeClass('light dark');
+			if ($(this).is(':checked'))
+				$('body').addClass('dark');
+			else {
+				$('body').addClass('light');
+			}
+		});
 		// initialize selected images
 		var wrapperElement = '';
 		selectedPhotos.forEach(function(index) {
