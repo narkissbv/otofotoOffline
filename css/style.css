@@ -75,7 +75,8 @@ body.dark .selection-index {
 .image-wrapper.selected .image-select .action-remove {
     display: block;
 }
-.image-wrapper.selected .card-content {
+.light .image-wrapper.selected .card-content,
+.dark .image-wrapper.selected .card-content {
 	background-color: #ce93d8;
 }
 .image-wrapper.selected .card-content label {
