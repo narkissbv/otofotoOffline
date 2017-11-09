@@ -185,32 +185,60 @@ body.dark .selection-index {
 	}
 }
 
-.selection-index.add {
-	animation-name: index-add;
+.light .selection-index.add {
+	animation-name: index-add-light;
 }
-@keyframes index-add {
+@keyframes index-add-light {
 	0% { background-color: white; }
 	50% { background-color: #66bb6a; }
 	100% { background-color: white; }
 }
 
-.selection-index.remove {
-	animation-name: index-remove;
+.light .selection-index.remove {
+	animation-name: index-remove-light;
 }
-@keyframes index-remove {
+@keyframes index-remove-light {
 	0% { background-color: white; }
 	50% { background-color: #ee6e73; }
 	100% { background-color: white; }
 }
 
-.selection-index.error {
-	animation-name: index-error;
+.light .selection-index.error {
+	animation-name: index-error-light;
 	color: white;
 }
-@keyframes index-error {
+@keyframes index-error-light {
 	0% { background-color: white; }
 	50% { background-color: #b71c1c; }
 	100% { background-color: white; }	
+}
+
+.dark .selection-index.add {
+	animation-name: index-add-dark;
+}
+@keyframes index-add-dark {
+	0% { background-color: #444; }
+	50% { background-color: #66bb6a; }
+	100% { background-color: #444; }
+}
+
+.dark .selection-index.remove {
+	animation-name: index-remove-dark;
+}
+@keyframes index-remove-dark {
+	0% { background-color: #444; }
+	50% { background-color: #ee6e73; }
+	100% { background-color: #444; }
+}
+
+.dark .selection-index.error {
+	animation-name: index-error-dark;
+	color: white;
+}
+@keyframes index-error-dark {
+	0% { background-color: #444; }
+	50% { background-color: #b71c1c; }
+	100% { background-color: #444; }
 }
 
 .selection-download {

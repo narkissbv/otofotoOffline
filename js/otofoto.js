@@ -3,12 +3,14 @@ var albumName = album.substring(0, album.indexOf('.html')),
 	perPage = 60,
 	dir = "photos",
 	currentPage = localStorage['currentPage'] || 1;
-	currentPage = JSON.parse(currentPage);
+currentPage = JSON.parse(currentPage);
 localStorage[albumName] = localStorage[albumName] || '[]';
+localStorage['theme'] = localStorage['theme'] || 'light';
 selectedPhotos = JSON.parse(localStorage[albumName]);
 
 $(document).ready(function() {
 	renderPage();
+	initTheme();
 });
 
 function renderPage() {
@@ -90,10 +92,13 @@ function renderPage() {
 
 		$('.js-theme-switch').on('change', function() {
 			$('body').removeClass('light dark');
-			if ($(this).is(':checked'))
+			if ($(this).is(':checked')) {
 				$('body').addClass('dark');
+				localStorage['theme'] = 'dark';
+			}
 			else {
 				$('body').addClass('light');
+				localStorage['theme'] = 'light';
 			}
 		});
 		// initialize selected images
@@ -251,4 +256,8 @@ function triggerIndexUpdate(action) {
 	$('.selection-index .progress').attr({
 		'title': 'selected ' + Math.floor(selectedPhotos.length / albumSize * 100) + "%"
 	});
+}
+
+function initTheme() {
+	$('.js-theme-switch').prop('checked', localStorage['theme'] === 'dark').change();
 }
