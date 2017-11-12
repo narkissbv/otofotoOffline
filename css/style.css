@@ -35,9 +35,6 @@ body.dark .selection-index {
 	margin-bottom: 10px;
 	position: relative;
 }
-.image-wrapper img {
-	cursor: pointer;
-}
 .image-wrapper .image-select {
 	position: absolute;
 	bottom: -25px;

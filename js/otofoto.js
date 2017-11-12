@@ -1,6 +1,6 @@
 var album = location.pathname.split("/").pop();
 var albumName = album.substring(0, album.indexOf('.html')),
-	perPage = 60,
+	perPage = 10,
 	dir = "photos",
 	currentPage = localStorage['currentPage'] || 1;
 currentPage = JSON.parse(currentPage);
@@ -25,18 +25,16 @@ function renderPage() {
 		labelHolder = templateElement.content.querySelector('label'),
 		imageWrapperElement = templateElement.content.querySelector('.image-wrapper'),
 		offset = (currentPage - 1) * perPage,
-		i = 0;
 		pageFiles = files.slice((currentPage - 1) * perPage, (currentPage) * perPage);
-		pageFiles.forEach(function(file) {
+		pageFiles.forEach(function(file, index) {
 			imgHolder.src = dir + "/" + file;
-			imgHolder.className = "js-photo-" + (offset + i);
+			imgHolder.className = "js-photo-" + (offset + index) + ' materialboxed';
 			imgHolder.alt = file;
 			labelHolder.innerHTML = file;
-			imageWrapperElement.dataset.imgId = offset + i;
-			imageWrapperElement.className = "image-wrapper col s12 m6 l3 " + "img-wrapper-" + (offset + i);
+			imageWrapperElement.dataset.imgId = offset + index;
+			imageWrapperElement.className = "image-wrapper col s12 m6 l3 " + "img-wrapper-" + (offset + index);
 			var clone = document.importNode(templateElement.content, true);
 			photosContainer.append(clone);
-			i++;
 		});
 
 		// Build pagination
